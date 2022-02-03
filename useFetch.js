@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 export const useFetch = (url) => {
   
-const [state, setstate] = useState({data:null, loading:true, error:null});
+const [state, setState] = useState({data:null, loading:true, error:null});
 const isMounted = useRef(true);
 
 useEffect(()=>{
@@ -13,14 +13,14 @@ useEffect(()=>{
 
 useEffect(() => {
 
-    setstate({data:null, loading:true, error:null})
+    setState({data:null, loading:true, error:null})
   
     fetch(url)
     .then(resp =>resp.json())
     .then(data=>{
         //estem cridant un component mentre executa l'altra i si cancelem i esta executant l'altra dona error per aixo aquet if
             if(isMounted.current){
-                setstate({
+                setState({
                     loading:false,
                     error:null,
                     data
@@ -28,6 +28,13 @@ useEffect(() => {
     
             }
         
+    })
+    .catch( () => {
+        setState({
+            data: null,
+            loading: false,
+            error: 'No se pudo cargar la info'
+        })
     })
 }, [url]);
 
